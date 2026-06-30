@@ -108,4 +108,57 @@
       if (form.classList.contains('newsletter-form')) form.reset();
     });
   });
+
+  /* ---------- Impact calculator (only on impact-calculator.html) ------- */
+  var calc = document.querySelector('[data-calculator]');
+  if (calc) {
+    var SAVINGS_RATE = 0.12;          // 12% average savings (from page copy)
+    var DAYS_MIN = 50, DAYS_MAX = 365;
+    var adpEl = document.getElementById('calc-adp');
+    var spendEl = document.getElementById('calc-spend');
+    var daysEl = document.getElementById('calc-days');
+    var outSpend = document.getElementById('calc-annual-spend');
+    var outSavings = document.getElementById('calc-annual-savings');
+
+    var usd = function (n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    };
+    // Parse a non-negative finite number; NaN means empty/invalid.
+    var num = function (el) {
+      if (!el || el.value.trim() === '') return NaN;
+      var v = parseFloat(el.value);
+      return isFinite(v) && v >= 0 ? v : NaN;
+    };
+
+    var recompute = function () {
+      var adp = num(adpEl);
+      var spend = num(spendEl);
+      var days = num(daysEl);
+      if (isFinite(days)) days = Math.min(DAYS_MAX, Math.max(DAYS_MIN, days));
+
+      if (!isFinite(adp) || !isFinite(spend) || !isFinite(days)) {
+        outSpend.textContent = '$0';     // never NaN
+        outSavings.textContent = '$0';
+        return;
+      }
+      var annualFoodSpend = adp * spend * days;
+      var annualSavings = SAVINGS_RATE * annualFoodSpend;
+      outSpend.textContent = usd(annualFoodSpend);
+      outSavings.textContent = usd(annualSavings);
+    };
+
+    [adpEl, spendEl, daysEl].forEach(function (el) {
+      if (el) el.addEventListener('input', recompute);
+    });
+    // Correct the Days field to the clamped value once the user leaves it.
+    if (daysEl) {
+      daysEl.addEventListener('change', function () {
+        var d = num(daysEl);
+        if (isFinite(d)) daysEl.value = Math.min(DAYS_MAX, Math.max(DAYS_MIN, d));
+        recompute();
+      });
+    }
+    calc.addEventListener('submit', function (e) { e.preventDefault(); });
+    recompute();                        // initialise to $0
+  }
 })();
