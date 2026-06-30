@@ -734,3 +734,23 @@ body.modal-open{overflow:hidden;}
   .calc{grid-template-columns:1fr;}
   .calc__results{border-left:none;border-top:1px solid #eef1f5;}
 }
+
+/* =========================================================================
+   Legal pages (Privacy / Terms) — readable single-column article
+   ========================================================================= */
+.legal-body{font-size:1rem;}
+.legal-body p{margin-bottom:1.1em;line-height:1.65;color:var(--ma-text);}
+.legal-body h2{
+  margin:1.9em 0 .5em;font-size:clamp(1.3rem,2.4vw,1.6rem);
+  color:var(--ma-heading);padding-bottom:.25em;border-bottom:1px solid #eef1f5;
+}
+.legal-body h2:first-child{margin-top:0;}
+.legal-body h3{margin:1.5em 0 .4em;font-size:1.1rem;color:var(--ma-navy);}
+.legal-body ul{margin:0 0 1.3em;padding-left:1.35em;list-style:disc;}
+.legal-body ul li{margin-bottom:.5em;line-height:1.6;color:var(--ma-text);}
+.legal-callout{
+  background:var(--ma-bg-soft);border-left:4px solid var(--ma-teal);
+  padding:1.1em 1.3em;border-radius:0 var(--ma-radius) var(--ma-radius) 0;
+  font-weight:600;color:var(--ma-navy);margin-bottom:1.6em;
+}
+.legal-updated{font-size:.9rem;color:#6b7a89;font-style:italic;}
