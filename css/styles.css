@@ -635,6 +635,29 @@ body.modal-open{overflow:hidden;}
 .post-card__more{margin-top:auto;font-weight:600;color:var(--ma-blue);align-self:flex-start;}
 .post-card__more:hover{text-decoration:underline;}
 
+/* Real thumbnail image inside a card (16:9, cover) */
+.post-card__img{
+  display:block;width:100%;aspect-ratio:16/9;object-fit:cover;
+  border-bottom:1px solid #eef1f5;background:var(--ma-bg-soft);
+}
+
+/* Reusable on-brand gradient block — card thumbnails + article header banner */
+.brand-block{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,
+      var(--ma-navy) 0%, var(--ma-blue) 55%, var(--ma-teal) 100%);
+  color:#fff;overflow:hidden;
+}
+.brand-block--16x9{aspect-ratio:16/9;}
+.brand-block--banner{aspect-ratio:3/1;min-height:150px;}
+.brand-block__label{
+  font-family:var(--ma-font-head);font-weight:600;color:#fff;
+  text-transform:uppercase;letter-spacing:.06em;line-height:1;
+  font-size:clamp(1.05rem,3.4vw,1.7rem);
+}
+.brand-block__label strong{font-weight:800;}
+.brand-block--banner .brand-block__label{font-size:clamp(1.5rem,4vw,2.4rem);}
+
 @media (max-width:980px){.blog-grid{grid-template-columns:repeat(2,1fr);}}
 @media (max-width:680px){.blog-grid{grid-template-columns:1fr;max-width:440px;margin-inline:auto;}}
 
