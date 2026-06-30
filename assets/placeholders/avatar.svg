@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Photo placeholder">
+  <defs>
+    <clipPath id="ma-avatar-clip"><circle cx="60" cy="60" r="60"/></clipPath>
+  </defs>
+  <g clip-path="url(#ma-avatar-clip)">
+    <rect width="120" height="120" fill="#e8edf2"/>
+    <circle cx="60" cy="48" r="21" fill="#b4bfca"/>
+    <circle cx="60" cy="118" r="34" fill="#b4bfca"/>
+  </g>
+</svg>

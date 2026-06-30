@@ -98,10 +98,14 @@
   /* ---------- Inert forms (no backend by design) ---------------------- */
   document.querySelectorAll('form[data-inert]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var note = form.querySelector('.newsletter-feedback');
-      if (note) note.textContent = 'Thanks! (preview only — signup is not active)';
-      form.reset();
+      e.preventDefault();                                  // never submits
+      var note = form.querySelector('.form-note, .newsletter-feedback');
+      var msg = form.getAttribute('data-inert-msg') ||
+                'Thanks! (preview only — signup is not active)';
+      if (note) note.textContent = msg;
+      // Clear the newsletter field after "subscribing"; leave the contact
+      // form's typed content in place so the preview note makes sense.
+      if (form.classList.contains('newsletter-form')) form.reset();
     });
   });
 })();
