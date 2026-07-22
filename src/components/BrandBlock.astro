@@ -1,0 +1,14 @@
+---
+// On-brand gradient block (navy → blue → teal) with the white MenuAmbition
+// wordmark. Replaces never-archived imagery. Variants:
+//  - '16x9'  : card thumbnail box
+//  - 'banner': wide article-header banner (3:1)
+interface Props {
+  variant: '16x9' | 'banner';
+  class?: string;
+}
+const { variant, class: className } = Astro.props;
+---
+<span class:list={['brand-block', `brand-block--${variant}`, className]} role="img" aria-label="MenuAmbition">
+  <span class="brand-block__label">Menu<strong>Ambition</strong></span>
+</span>

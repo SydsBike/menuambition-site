@@ -1,0 +1,67 @@
+---
+// Root-level dynamic route for blog posts (spec §3): posts live at the site
+// root (e.g. /menu-planning-vs-menu-optimization/), matching the original
+// site's URLs. Static routes (about.astro, …) take precedence over this one.
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import BrandBlock from '../components/BrandBlock.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const isVideo = post.data.heroType === 'video';
+// Iframe title = post title without the "[Video] " prefix (matches old build)
+const videoTitle = post.data.title.replace(/^\[Video\]\s*/, '');
+
+const related = (await getCollection('posts'))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout
+  title={`${post.data.title} — MenuAmbition`}
+  description={post.data.description ?? post.data.excerpt}
+  ogTitle={post.data.title}
+  ogDescription={post.data.description ?? post.data.excerpt}
+  ogType="article"
+  section="/blog/"
+>
+  <article class="section">
+    <div class="article">
+      <a class="article__back" href="/blog/">&larr; Back to Resources</a>
+
+      <span class="post-eyebrow">{isVideo ? 'Video' : 'Article'}</span>
+      <h1>{post.data.title}</h1>
+
+      <!-- Article posts: original header banner was never archived → gradient banner -->
+      {!isVideo && <BrandBlock variant="banner" class="post-media" />}
+
+      <div class="post-body">
+        <Content />
+        {post.data.vimeoId && <VideoEmbed vimeoId={post.data.vimeoId} title={videoTitle} />}
+      </div>
+
+      <!-- Related content (sibling posts, from the collection) -->
+      <section class="related-content" aria-label="Related content">
+        <h2>Related Content</h2>
+        <ul class="related-list">
+          {related.map((r) => (
+            <li class="related-list__item">
+              <a href={`/${r.id}/`}>{r.data.title}</a>
+              <p>{r.data.relatedBlurb ?? r.data.excerpt}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

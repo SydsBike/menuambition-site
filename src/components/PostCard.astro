@@ -1,0 +1,27 @@
+---
+// Blog-index card, generated from a posts-collection entry.
+// Real thumbnail when the entry has `thumb`; BrandBlock otherwise.
+import type { CollectionEntry } from 'astro:content';
+import BrandBlock from './BrandBlock.astro';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+const { post } = Astro.props;
+const href = `/${post.id}/`;
+const { title, excerpt, thumb } = post.data;
+---
+<article class="post-card">
+  <a class="post-card__thumb" href={href} tabindex="-1" aria-hidden="true">
+    {thumb ? (
+      <img class="post-card__img" src={thumb} alt={title} width="1280" height="720" loading="lazy" />
+    ) : (
+      <BrandBlock variant="16x9" />
+    )}
+  </a>
+  <div class="post-card__body">
+    <h2 class="post-card__title"><a href={href}>{title}</a></h2>
+    <p class="post-card__excerpt">{excerpt}</p>
+    <a class="post-card__more" href={href}>Read more &rarr;</a>
+  </div>
+</article>

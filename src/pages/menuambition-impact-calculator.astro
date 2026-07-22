@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Impact Calculator — MenuAmbition"
+  description="Estimate the potential annual food-spend savings from applying menu optimization to your foodservice operation."
+  ogTitle="Impact Calculator — How Menu Intelligence Optimizes the Bottom Line"
+  ogDescription="Simulate the potential financial impact of applying advanced decision science to your menu planning."
+>
+
+  <!-- ===================== PAGE HEADER ===================== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>How Menu Intelligence Optimizes the Bottom Line</h1>
+    </div>
+  </section>
+
+  <!-- ===================== CALCULATOR ===================== -->
+  <section class="section">
+    <div class="container">
+
+      <div class="calc-intro">
+        <p>This calculator simulates the potential financial impact that you could realize by applying artificial intelligence and advanced decision science to your menu planning process. This calculator is based on real customers who have applied menu optimization technology throughout their menu planning processes. On average, customers who actively use our platform see a 12% savings on their annual food spend.</p>
+        <p class="calc-instruction">Enter your current metrics to calculate your potential results.</p>
+      </div>
+
+      <form class="calc" data-calculator novalidate>
+        <div class="calc__inputs">
+
+          <div class="calc-field">
+            <label for="calc-adp">Average Daily Population (ADP)</label>
+            <span class="calc-input">
+              <input type="number" id="calc-adp" name="adp" inputmode="numeric"
+                     min="0" step="1" placeholder="e.g. 500" required />
+            </span>
+            <span class="hint">Enter the number of people you serve each day.</span>
+          </div>
+
+          <div class="calc-field">
+            <label for="calc-spend">Daily Food $ Spend Per Person</label>
+            <span class="calc-input calc-input--money">
+              <input type="number" id="calc-spend" name="spend" inputmode="decimal"
+                     min="0" step="0.01" placeholder="e.g. 4.50" required />
+            </span>
+            <span class="hint">Enter the total cost of meals in a single day per person.</span>
+          </div>
+
+          <div class="calc-field">
+            <label for="calc-days">Foodservice Operation Days Per Year</label>
+            <span class="calc-input">
+              <input type="number" id="calc-days" name="days" inputmode="numeric"
+                     min="50" max="365" step="1" placeholder="50 – 365" required />
+            </span>
+            <span class="hint">Enter the total days in a year where you&rsquo;re serving food.</span>
+          </div>
+
+        </div>
+
+        <div class="calc__results" aria-live="polite">
+          <div class="calc-result calc-result--secondary">
+            <p class="calc-result__label">Annual Food Spend</p>
+            <p class="calc-result__value" id="calc-annual-spend">$0</p>
+          </div>
+          <div class="calc-result calc-result--primary">
+            <p class="calc-result__label">Annual Savings on Food Spend</p>
+            <p class="calc-result__value" id="calc-annual-savings">$0</p>
+            <p class="calc-result__note">Based on an average 12% savings on annual food spend.</p>
+          </div>
+        </div>
+      </form>
+
+      <!-- ===================== RELATED RESOURCES ===================== -->
+      <section class="related-content" aria-label="Related resources" style="max-width:960px;margin-inline:auto;">
+        <h2>Related Resources</h2>
+        <ul class="related-list">
+          <li class="related-list__item">
+            <a href="/why-menu-planning-software-falls-short-for-institutional-foodservice-operators/">Why Menu Planning Software Falls Short for Institutional Foodservice Operators</a>
+          </li>
+          <li class="related-list__item">
+            <a href="/menu-planning-vs-menu-optimization/">[Video] Comparing Menu Planning with Menu Optimization</a>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </section>
+
+  <script>
+    // Impact calculator (ported unchanged from js/main.js).
+    const calc = document.querySelector('[data-calculator]');
+    if (calc) {
+      const SAVINGS_RATE = 0.12;          // 12% average savings (from page copy)
+      const DAYS_MIN = 50, DAYS_MAX = 365;
+      const adpEl = document.getElementById('calc-adp') as HTMLInputElement | null;
+      const spendEl = document.getElementById('calc-spend') as HTMLInputElement | null;
+      const daysEl = document.getElementById('calc-days') as HTMLInputElement | null;
+      const outSpend = document.getElementById('calc-annual-spend')!;
+      const outSavings = document.getElementById('calc-annual-savings')!;
+
+      const usd = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
+      // Parse a non-negative finite number; NaN means empty/invalid.
+      const num = (el: HTMLInputElement | null) => {
+        if (!el || el.value.trim() === '') return NaN;
+        const v = parseFloat(el.value);
+        return isFinite(v) && v >= 0 ? v : NaN;
+      };
+
+      const recompute = () => {
+        const adp = num(adpEl);
+        const spend = num(spendEl);
+        let days = num(daysEl);
+        if (isFinite(days)) days = Math.min(DAYS_MAX, Math.max(DAYS_MIN, days));
+
+        if (!isFinite(adp) || !isFinite(spend) || !isFinite(days)) {
+          outSpend.textContent = '$0';     // never NaN
+          outSavings.textContent = '$0';
+          return;
+        }
+        const annualFoodSpend = adp * spend * days;
+        const annualSavings = SAVINGS_RATE * annualFoodSpend;
+        outSpend.textContent = usd(annualFoodSpend);
+        outSavings.textContent = usd(annualSavings);
+      };
+
+      [adpEl, spendEl, daysEl].forEach((el) => {
+        if (el) el.addEventListener('input', recompute);
+      });
+      // Correct the Days field to the clamped value once the user leaves it.
+      if (daysEl) {
+        daysEl.addEventListener('change', () => {
+          const d = num(daysEl);
+          if (isFinite(d)) daysEl.value = String(Math.min(DAYS_MAX, Math.max(DAYS_MIN, d)));
+          recompute();
+        });
+      }
+      calc.addEventListener('submit', (e) => e.preventDefault());
+      recompute();                        // initialise to $0
+    }
+  </script>
+
+</BaseLayout>

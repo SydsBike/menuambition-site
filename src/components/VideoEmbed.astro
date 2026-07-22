@@ -1,0 +1,17 @@
+---
+// Responsive 16:9 Vimeo embed (inline — not the modal).
+interface Props {
+  vimeoId: string;
+  title: string;
+}
+const { vimeoId, title } = Astro.props;
+---
+<div class="video-embed">
+  <iframe
+    src={`https://player.vimeo.com/video/${vimeoId}?dnt=1`}
+    loading="lazy"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen
+    title={title}
+  ></iframe>
+</div>
