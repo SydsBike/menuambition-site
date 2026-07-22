@@ -679,6 +679,22 @@ body.modal-open{overflow:hidden;}
 }
 .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 
+/* Fallback layer — revealed only if the Vimeo iframe fails to load */
+.video-embed__fallback{
+  position:absolute;inset:0;display:flex;align-items:flex-end;
+}
+.video-embed__fallback[hidden]{display:none;}
+.video-embed__fallback img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.video-embed__fallback-caption{
+  position:relative;width:100%;margin:0;padding:.8em 1.2em;text-align:center;
+  background:rgba(15,18,40,.88);color:#fff;font-size:.95rem;
+}
+.video-embed__fallback-caption a{color:var(--ma-teal-bright);font-weight:600;}
+.video-embed--failed iframe{visibility:hidden;}
+.video-embed__noscript{font-size:.95rem;color:#5a6b7b;margin:-1.2em 0 2em;}
+
 /* Related content list at the foot of a post */
 .related-content{margin-top:3em;padding-top:2em;border-top:1px solid #e2e8f0;}
 .related-content h2{font-size:1.3rem;margin-bottom:1.1em;}

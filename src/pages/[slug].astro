@@ -47,7 +47,7 @@ const related = (await getCollection('posts'))
 
       <div class="post-body">
         <Content />
-        {post.data.vimeoId && <VideoEmbed vimeoId={post.data.vimeoId} title={videoTitle} />}
+        {post.data.vimeoId && <VideoEmbed vimeoId={post.data.vimeoId} title={videoTitle} fallbackThumb={post.data.thumb} />}
       </div>
 
       <!-- Related content (sibling posts, from the collection) -->

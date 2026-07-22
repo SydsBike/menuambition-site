@@ -1,12 +1,19 @@
 ---
 // Responsive 16:9 Vimeo embed (inline — not the modal).
+// The videos live on a third-party Vimeo account we don't control, so the
+// embed degrades gracefully: if the iframe never loads (dead account,
+// blocked embeds, network failure), a thumbnail + direct vimeo.com link is
+// revealed instead of an empty black box.
 interface Props {
   vimeoId: string;
   title: string;
+  /** Poster/thumbnail revealed if the embed fails to load. */
+  fallbackThumb?: string;
 }
-const { vimeoId, title } = Astro.props;
+const { vimeoId, title, fallbackThumb } = Astro.props;
+const watchUrl = `https://vimeo.com/${vimeoId}`;
 ---
-<div class="video-embed">
+<div class="video-embed" data-video-embed>
   <iframe
     src={`https://player.vimeo.com/video/${vimeoId}?dnt=1`}
     loading="lazy"
@@ -14,4 +21,45 @@ const { vimeoId, title } = Astro.props;
     allowfullscreen
     title={title}
   ></iframe>
+
+  {fallbackThumb && (
+    <div class="video-embed__fallback" hidden>
+      <img src={fallbackThumb} alt="" loading="lazy" />
+      <p class="video-embed__fallback-caption">
+        The video player couldn&rsquo;t be loaded.
+        <a href={watchUrl} rel="noopener">Watch &ldquo;{title}&rdquo; on vimeo.com &rarr;</a>
+      </p>
+    </div>
+  )}
 </div>
+
+{fallbackThumb && (
+  <noscript>
+    <p class="video-embed__noscript">
+      The embedded player requires JavaScript &mdash;
+      <a href={watchUrl} rel="noopener">watch &ldquo;{title}&rdquo; on vimeo.com</a>.
+    </p>
+  </noscript>
+)}
+
+<script>
+  // Reveal the fallback if the Vimeo iframe never loads. Cross-origin
+  // network failures either fire `error` or fire nothing at all, so a
+  // load-flag + timeout covers both; a successful load keeps the player.
+  document.querySelectorAll<HTMLElement>('[data-video-embed]').forEach((wrap) => {
+    const iframe = wrap.querySelector('iframe');
+    const fallback = wrap.querySelector<HTMLElement>('.video-embed__fallback');
+    if (!iframe || !fallback) return;
+
+    let loaded = false;
+    const fail = () => {
+      if (loaded) return;
+      wrap.classList.add('video-embed--failed');
+      fallback.hidden = false;
+    };
+
+    iframe.addEventListener('load', () => { loaded = true; });
+    iframe.addEventListener('error', fail);
+    setTimeout(fail, 6000);
+  });
+</script>
