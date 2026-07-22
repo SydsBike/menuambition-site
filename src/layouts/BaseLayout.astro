@@ -21,6 +21,13 @@ const {
   ogType = 'website',
   section,
 } = Astro.props;
+
+// Canonical URL: site origin + current path, trailing slash to match the
+// 'directory' build format (www is canonical; bare domain 301s to it).
+const path = Astro.url.pathname;
+const canonical = new URL(path.endsWith('/') ? path : `${path}/`, Astro.site).href;
+// Absolute og:image — relative values are ignored by most scrapers.
+const ogImage = new URL('/assets/images/og-image.png', Astro.site).href;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -29,12 +36,14 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
 
   <!-- Social share -->
   <meta property="og:title" content={ogTitle} />
   <meta property="og:description" content={ogDescription} />
   <meta property="og:type" content={ogType} />
-  <meta property="og:image" content="/assets/images/og-image.png" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
 
   <!-- Icons -->
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png" />
