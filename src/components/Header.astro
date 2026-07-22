@@ -1,0 +1,69 @@
+---
+// Global sticky header (spec §3 of the original build, ported).
+// Active nav state is driven by the current route; pages that belong to a
+// section without their own nav item (e.g. blog posts) can pass `section`
+// to highlight it (posts → "/blog/").
+interface Props {
+  section?: string;
+}
+const { section } = Astro.props;
+
+const normalize = (p: string) => (p.endsWith('/') ? p : p + '/');
+const current = normalize(section ?? Astro.url.pathname);
+const active = (href: string) => (normalize(href) === current ? 'page' : undefined);
+---
+<header class="site-header">
+  <div class="container">
+    <a class="site-header__logo" href="/" aria-label="MenuAmbition home">
+      <img src="/assets/images/logo-header.png" alt="MenuAmbition" />
+    </a>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-label="Toggle navigation"
+      aria-controls="primary-nav"
+      aria-expanded="false"
+    >
+      <span></span>
+    </button>
+
+    <nav class="main-nav" id="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="/" aria-current={active('/')}>Home</a></li>
+        <li><a href="/about/" aria-current={active('/about/')}>About</a></li>
+        <li><a href="/menuambition-impact-calculator/" aria-current={active('/menuambition-impact-calculator/')}>Impact Calculator</a></li>
+        <li><a href="/blog/" aria-current={active('/blog/')}>Resources</a></li>
+        <li><a class="btn-pill" href="/contact/" aria-current={active('/contact/')}>Let&rsquo;s Talk</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile nav toggle + header scroll shadow (ported from js/main.js).
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close the panel after a nav link is tapped
+    nav.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a') && nav.classList.contains('is-open')) {
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const onScroll = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>

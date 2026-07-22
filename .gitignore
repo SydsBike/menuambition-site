@@ -16,3 +16,7 @@ Icon
 *.log
 node_modules/
 .cache/
+
+# Astro
+dist/
+.astro/
