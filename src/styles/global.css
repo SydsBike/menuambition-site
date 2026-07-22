@@ -517,6 +517,7 @@ body.modal-open{overflow:hidden;}
   margin:0 auto 18px;display:block;
   background:var(--ma-bg-soft);
 }
+.person-card__avatar--photo{object-fit:cover;}
 .advisors-grid .person-card__avatar{width:104px;height:104px;}
 .person-card__name{
   font-family:var(--ma-font-head);font-weight:600;

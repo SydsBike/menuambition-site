@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PersonCard from '../components/PersonCard.astro';
+import shoaibPhoto from '../assets/team/shoaib-abbasi.jpg';
+---
+<BaseLayout
+  title="About — MenuAmbition"
+  description="MenuAmbition was developed to fill the market void of modern decision-support systems for professional menu designers. Meet the founders."
+  ogTitle="About MenuAmbition"
+  ogDescription="Better Meals, Better Nutrition, Better Budgets… together."
+>
+
+  <!-- ===================== PAGE HEADER ===================== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>About MenuAmbition</h1>
+      <p class="page-header__tagline">Better Meals, Better Nutrition, Better Budgets&hellip; together.</p>
+      <p class="page-header__lead">Our menu optimization platform helps foodservice teams reach their best possible menu performance &ndash; accounting for meal and menu appeal, nutrition, and cost, holistically.</p>
+    </div>
+  </section>
+
+  <!-- ===================== OUR STORY ===================== -->
+  <section class="our-story section">
+    <div class="container">
+      <h2>Our Story</h2>
+      <p>Menu Ambition was developed to fill the market void of modern decision-support systems for helping professional menu designers.</p>
+      <p>Our team combines over fifty years of exceptional know-how in every aspect of foodservice, including dietitians and operators who have worked in the trenches.</p>
+      <blockquote class="testimonial">
+        <p>&ldquo;The team behind MenuAmbition is exceptional. They are truly passionate about making a difference for their customers.&rdquo;</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ===================== FOUNDERS ===================== -->
+  <section class="people-section section section--soft">
+    <div class="container">
+      <h2>Meet the Founders</h2>
+
+      <div class="founders-grid">
+        <PersonCard name="Rick Pedi" title="Founder and CEO">
+          <ul class="person-card__bio">
+            <li>35 years food industry experience, founder of three food businesses, senior executive (COO &amp; CEO).</li>
+            <li>Thought-leader in innovation and process improvement &ndash; co-taught Clayton Christensen&rsquo;s inaugural Executive Innovation Master Class at Harvard Business School (for Unilever Food Brands).</li>
+            <li>Consulted to major food companies &ndash; Kraft, McDonald&rsquo;s, Unilever, Oscar Mayer, Keebler, Hormel, Borden, Mead Johnson, and Daymon Associates.</li>
+            <li>Introduced revolutionary problem-solving frameworks and decision-making models to the food industry that are now standards in product development and finding growth opportunities.</li>
+          </ul>
+        </PersonCard>
+
+        <PersonCard name="Shoaib Abbasi" title="Founder and Innovation Strategist" photo={shoaibPhoto}>
+          <ul class="person-card__bio">
+            <li>Senior supply chain, logistics, and technology executive &ndash; 30+ years software development and solutions implementation across healthcare, manufacturing, financial, and services industries.</li>
+            <li>Founder/CEO of Strategic Systems International, a global software provider delivering hundreds of millions in client value, from the Fortune 500 to early-stage technology companies.</li>
+            <li>Founder of The Optim&eacute; Group, an advanced analytics software company helping health systems solve persistent workforce deployment challenges.</li>
+            <li>Co-founder of Optim&eacute; Supply Chain, solving complex and intractable healthcare supply-chain problems using analytics, machine learning, and mathematical optimization.</li>
+          </ul>
+        </PersonCard>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
