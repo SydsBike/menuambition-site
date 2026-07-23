@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PersonCard from '../components/PersonCard.astro';
+import rickPhoto from '../assets/team/rick-pedi.jpg';
 import shoaibPhoto from '../assets/team/shoaib-abbasi.jpg';
 ---
 <BaseLayout
@@ -37,7 +38,7 @@ import shoaibPhoto from '../assets/team/shoaib-abbasi.jpg';
       <h2>Meet the Founders</h2>
 
       <div class="founders-grid">
-        <PersonCard name="Rick Pedi" title="Founder and CEO">
+        <PersonCard name="Rick Pedi" title="Founder and CEO" photo={rickPhoto}>
           <ul class="person-card__bio">
             <li>35 years food industry experience, founder of three food businesses, senior executive (COO &amp; CEO).</li>
             <li>Thought-leader in innovation and process improvement &ndash; co-taught Clayton Christensen&rsquo;s inaugural Executive Innovation Master Class at Harvard Business School (for Unilever Food Brands).</li>
